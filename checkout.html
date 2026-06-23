@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finalizar pedido — Field Dogg</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F4EEE2;--cream-dark:#EAE1CE;--olive:#4A5D3A;--olive-dark:#36462A;--ink:#2B2A24;--ink-muted:#6B6555;--border:rgba(43,42,36,0.12);--white:#FFFDF8;--ease:cubic-bezier(0.25,0,0,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Fraunces',serif}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;background:rgba(244,238,226,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{width:38px;height:38px;border-radius:11px;background:var(--olive);display:flex;align-items:center;justify-content:center}
+.nav-logo-mark svg{width:22px;height:22px;stroke:var(--cream)}
+.nav-brand strong{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);display:block;line-height:1}
+.nav-brand span{font-size:0.62rem;color:var(--ink-muted);letter-spacing:0.06em}
+
+/* BREADCRUMB */
+.breadcrumb{padding:14px 56px;font-size:0.78rem;color:var(--ink-muted);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);background:var(--white)}
+.breadcrumb a{color:var(--ink-muted);text-decoration:none;transition:color 0.15s}
+.breadcrumb a:hover{color:var(--olive)}
+.breadcrumb svg{width:12px;height:12px;stroke:var(--ink-muted)}
+
+/* STEPS */
+.steps{padding:28px 56px;background:var(--white);border-bottom:1px solid var(--border)}
+.steps-inner{max-width:600px;margin:0 auto;display:flex;align-items:center}
+.step{display:flex;align-items:center;gap:10px;flex:1}
+.step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
+.step.active .step-circle{background:var(--olive);color:white}
+.step.done .step-circle{background:var(--olive);color:white}
+.step:not(.active):not(.done) .step-circle{background:var(--cream-dark);color:var(--ink-muted)}
+.step-label{font-size:0.78rem;font-weight:500;color:var(--ink-muted)}
+.step.active .step-label,.step.done .step-label{color:var(--olive);font-weight:600}
+.step-line{flex:1;height:1px;background:var(--border);margin:0 8px}
+.step-line.done{background:var(--olive)}
+
+/* LAYOUT */
+.checkout-page{max-width:1200px;margin:0 auto;padding:48px 56px 100px;display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start}
+
+/* FORM */
+.checkout-form h2{font-size:1.5rem;font-weight:700;margin-bottom:28px}
+.form-section{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:20px}
+.form-section-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.form-section-title span{width:28px;height:28px;border-radius:50%;background:var(--olive);color:white;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.form-group:last-child{margin-bottom:0}
+.form-group label{font-size:0.75rem;font-weight:600;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{padding:12px 16px;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:0.9rem;color:var(--ink);outline:none;transition:border-color 0.15s,box-shadow 0.15s;width:100%}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--olive);box-shadow:0 0 0 3px rgba(74,93,58,0.08);background:var(--white)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--ink-muted)}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6555' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-color:var(--cream);cursor:pointer}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* PAYMENT */
+.payment-options{display:flex;flex-direction:column;gap:12px}
+.payment-option{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:border-color 0.15s,background 0.15s}
+.payment-option:hover{border-color:var(--olive);background:rgba(74,93,58,0.03)}
+.payment-option.selected{border-color:var(--olive);background:rgba(74,93,58,0.05)}
+.payment-option input[type=radio]{accent-color:var(--olive);width:16px;height:16px;cursor:pointer}
+.payment-icon{width:40px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.payment-label strong{display:block;font-size:0.88rem;font-weight:600;color:var(--ink)}
+.payment-label span{font-size:0.75rem;color:var(--ink-muted)}
+
+/* SUBMIT */
+.submit-btn{width:100%;padding:16px;background:var(--olive);border:none;border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.15s,transform 0.15s,box-shadow 0.15s;margin-top:8px}
+.submit-btn:hover{background:var(--olive-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,93,58,0.25)}
+.submit-btn svg{width:18px;height:18px;fill:white}
+.submit-note{text-align:center;font-size:0.75rem;color:var(--ink-muted);margin-top:12px;line-height:1.6}
+
+/* ORDER SUMMARY */
+.order-summary{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:28px;position:sticky;top:100px}
+.order-summary h3{font-size:1.1rem;font-weight:700;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.s-item{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;font-size:0.85rem}
+.s-item-name{color:var(--ink);max-width:180px;line-height:1.4}
+.s-item-price{color:var(--ink-muted);font-weight:500;white-space:nowrap}
+.s-divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.s-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:0.85rem}
+.s-row span:first-child{color:var(--ink-muted)}
+.s-row span:last-child{font-weight:500}
+.s-total{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.s-total span:first-child{font-family:'Fraunces',serif;font-size:1rem;font-weight:700}
+.s-total span:last-child{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:700;color:var(--olive)}
+.s-note{font-size:0.75rem;color:var(--ink-muted);line-height:1.6;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.s-secure{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--ink-muted);margin-top:12px}
+.s-secure svg{width:13px;height:13px;stroke:var(--olive)}
+
+/* ERROR / SUCCESS */
+.field-error{display:none;font-size:0.75rem;color:#C0392B;margin-top:4px}
+.field-error.show{display:block}
+input.error,select.error,textarea.error{border-color:#E74C3C !important}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:199;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.45);text-decoration:none;transition:transform 0.2s}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:28px;height:28px;fill:white}
+
+@media(max-width:960px){
+  nav{padding:14px 20px}
+  .breadcrumb,.steps{padding:12px 20px}
+  .checkout-page{padding:28px 20px 80px;grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .order-summary{position:static}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#F4EEE2"/><circle cx="22" cy="8" r="3" fill="#F4EEE2"/><circle cx="6" cy="15" r="2.5" fill="#F4EEE2"/><circle cx="26" cy="15" r="2.5" fill="#F4EEE2"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#F4EEE2"/></svg>
+    </div>
+    <div class="nav-brand">
+      <strong>Field Dogg</strong>
+      <span>Alimentos del Valle Moreno</span>
+    </div>
+  </a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Inicio</a>
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  <a href="productos.html">Productos</a>
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  <a href="carrito.html">Carrito</a>
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  <span>Finalizar pedido</span>
+</div>
+
+<div class="steps">
+  <div class="steps-inner">
+    <div class="step done"><div class="step-circle">✓</div><span class="step-label">Productos</span></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-circle">✓</div><span class="step-label">Carrito</span></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-circle">3</div><span class="step-label">Datos</span></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-circle">4</div><span class="step-label">Confirmación</span></div>
+  </div>
+</div>
+
+<div class="checkout-page">
+
+  <div class="checkout-form">
+    <h2>Datos para la entrega</h2>
+
+    <!-- DATOS PERSONALES -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <span>1</span> Información de contacto
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" id="f-nombre" placeholder="Tu nombre">
+          <div class="field-error" id="err-nombre">Ingresa tu nombre</div>
+        </div>
+        <div class="form-group">
+          <label>Apellido *</label>
+          <input type="text" id="f-apellido" placeholder="Tu apellido">
+          <div class="field-error" id="err-apellido">Ingresa tu apellido</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="tel" id="f-telefono" placeholder="+56 9 XXXX XXXX">
+          <div class="field-error" id="err-telefono">Ingresa tu teléfono</div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="f-email" placeholder="tu@email.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- DIRECCIÓN -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <span>2</span> Dirección de entrega
+      </div>
+      <div class="form-group">
+        <label>Calle y número *</label>
+        <input type="text" id="f-calle" placeholder="Ej: Av. Los Aromos 1234">
+        <div class="field-error" id="err-calle">Ingresa tu dirección</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ciudad / Sector *</label>
+          <input type="text" id="f-ciudad" placeholder="San Carlos" value="San Carlos">
+          <div class="field-error" id="err-ciudad">Ingresa la ciudad</div>
+        </div>
+        <div class="form-group">
+          <label>Región</label>
+          <select id="f-region">
+            <option value="ñuble" selected>Ñuble</option>
+            <option value="biobio">Biobío</option>
+            <option value="maule">Maule</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Instrucciones de entrega</label>
+        <textarea id="f-instrucciones" placeholder="Ej: Portón verde, tocar el timbre. Disponible de 10:00 a 18:00 hrs."></textarea>
+      </div>
+    </div>
+
+    <!-- PAGO -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <span>3</span> Forma de pago
+      </div>
+      <div class="payment-options">
+        <label class="payment-option selected" id="pay-transferencia">
+          <input type="radio" name="pago" value="transferencia" checked onchange="selectPay(this.closest('.payment-option'))">
+          <div class="payment-icon">🏦</div>
+          <div class="payment-label">
+            <strong>Transferencia bancaria</strong>
+            <span>Te enviamos los datos por WhatsApp al confirmar</span>
+          </div>
+        </label>
+        <label class="payment-option" id="pay-efectivo">
+          <input type="radio" name="pago" value="efectivo" onchange="selectPay(this.closest('.payment-option'))">
+          <div class="payment-icon">💵</div>
+          <div class="payment-label">
+            <strong>Efectivo contra entrega</strong>
+            <span>Pagas cuando recibes el saco en tu domicilio</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitOrder()">
+      <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.72.45 3.4 1.3 4.88L2 22l5.35-1.4c1.42.78 3.02 1.19 4.66 1.19h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.05 2zm5.79 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.55-1.17-2.97s.74-2.1 1-2.39c.26-.28.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.1.19-.15.31-.29.47-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.64-.14.26.09 1.66.78 1.95.93.28.14.47.21.54.33.07.12.07.69-.17 1.37z"/></svg>
+      Confirmar pedido por WhatsApp
+    </button>
+    <p class="submit-note">Se abrirá WhatsApp con tu pedido completo. El productor lo confirma y coordina la entrega contigo.</p>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="order-summary">
+    <h3>Tu pedido</h3>
+    <div id="summaryItems"></div>
+    <hr class="s-divider">
+    <div class="s-row"><span>Subtotal</span><span>A confirmar</span></div>
+    <div class="s-row"><span>Envío</span><span>A coordinar</span></div>
+    <div class="s-total"><span>Total</span><span>A confirmar</span></div>
+    <p class="s-note">💳 Pago al recibir (efectivo) o transferencia bancaria previa. Sin pagos online.</p>
+    <div class="s-secure">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Tus datos van directo al productor, sin intermediarios
+    </div>
+  </div>
+
+</div>
+
+<a class="wa-float" href="https://wa.me/56984327516" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.72.45 3.4 1.3 4.88L2 22l5.35-1.4c1.42.78 3.02 1.19 4.66 1.19h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.05 2zm5.79 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.55-1.17-2.97s.74-2.1 1-2.39c.26-.28.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.1.19-.15.31-.29.47-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.64-.14.26.09 1.66.78 1.95.93.28.14.47.21.54.33.07.12.07.69-.17 1.37z"/></svg>
+</a>
+
+<script>
+const cart = JSON.parse(localStorage.getItem('fd_cart') || '[]');
+
+// Render summary
+document.getElementById('summaryItems').innerHTML = cart.length
+  ? cart.map(i => `<div class="s-item"><span class="s-item-name">${i.name} × ${i.qty}</span><span class="s-item-price">$${i.price}</span></div>`).join('')
+  : '<p style="font-size:0.82rem;color:var(--ink-muted)">No hay productos. <a href="productos.html" style="color:var(--olive)">Ver productos</a></p>';
+
+function selectPay(el){
+  document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function validate(){
+  const fields = [
+    { id:'f-nombre', err:'err-nombre' },
+    { id:'f-apellido', err:'err-apellido' },
+    { id:'f-telefono', err:'err-telefono' },
+    { id:'f-calle', err:'err-calle' },
+    { id:'f-ciudad', err:'err-ciudad' },
+  ];
+  let ok = true;
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const er = document.getElementById(f.err);
+    if(!el.value.trim()){
+      el.classList.add('error'); er.classList.add('show'); ok = false;
+    } else {
+      el.classList.remove('error'); er.classList.remove('show');
+    }
+  });
+  return ok;
+}
+
+function submitOrder(){
+  if(!validate()) return;
+  const nombre   = document.getElementById('f-nombre').value.trim();
+  const apellido = document.getElementById('f-apellido').value.trim();
+  const telefono = document.getElementById('f-telefono').value.trim();
+  const email    = document.getElementById('f-email').value.trim();
+  const calle    = document.getElementById('f-calle').value.trim();
+  const ciudad   = document.getElementById('f-ciudad').value.trim();
+  const instr    = document.getElementById('f-instrucciones').value.trim();
+  const pago     = document.querySelector('input[name=pago]:checked').value;
+
+  const productosStr = cart.length
+    ? cart.map(i => `  • ${i.name} × ${i.qty}`).join('\n')
+    : '  (sin productos)';
+
+  let msg = `🐾 *NUEVO PEDIDO — Field Dogg*\n\n`;
+  msg += `*Cliente:* ${nombre} ${apellido}\n`;
+  msg += `*Teléfono:* ${telefono}\n`;
+  if(email) msg += `*Email:* ${email}\n`;
+  msg += `\n*📦 Productos:*\n${productosStr}\n`;
+  msg += `\n*🏠 Dirección de entrega:*\n  ${calle}, ${ciudad}\n`;
+  if(instr) msg += `  Instrucciones: ${instr}\n`;
+  msg += `\n*💳 Forma de pago:* ${pago === 'transferencia' ? 'Transferencia bancaria' : 'Efectivo contra entrega'}\n`;
+  msg += `\n¿Pueden confirmar disponibilidad y coordinar la entrega?`;
+
+  // Guardar datos para gracias.html
+  localStorage.setItem('fd_order', JSON.stringify({ nombre, apellido, telefono, ciudad, pago, productos: cart }));
+  localStorage.removeItem('fd_cart');
+
+  const url = `https://wa.me/56984327516?text=${encodeURIComponent(msg)}`;
+  setTimeout(() => { window.open(url, '_blank'); window.location.href = 'gracias.html'; }, 300);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productos — Field Dogg</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F4EEE2; --cream-dark: #EAE1CE; --olive: #4A5D3A; --olive-dark: #36462A;
+  --terracotta: #B5673A; --ink: #2B2A24; --ink-muted: #6B6555; --border: rgba(43,42,36,0.12);
+  --white: #FFFDF8; --ease: cubic-bezier(0.25,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Fraunces',serif}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;background:rgba(244,238,226,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{width:38px;height:38px;border-radius:11px;background:var(--olive);display:flex;align-items:center;justify-content:center}
+.nav-logo-mark svg{width:22px;height:22px;stroke:var(--cream)}
+.nav-brand strong{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);display:block;line-height:1}
+.nav-brand span{font-size:0.62rem;color:var(--ink-muted);letter-spacing:0.06em}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:0.82rem;color:var(--ink-muted);text-decoration:none;transition:color 0.15s}
+.nav-links a:hover,.nav-links a.active{color:var(--olive);font-weight:500}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-cart{position:relative;background:none;border:1.5px solid var(--border);border-radius:10px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--ink);transition:border-color 0.15s,background 0.15s}
+.nav-cart:hover{border-color:var(--olive);background:rgba(74,93,58,0.05)}
+.nav-cart svg{width:17px;height:17px;stroke:var(--ink)}
+.cart-badge{background:var(--olive);color:white;border-radius:50%;width:18px;height:18px;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;top:-7px;right:-7px}
+.cart-badge.hidden{display:none}
+
+/* BREADCRUMB */
+.breadcrumb{padding:16px 56px;font-size:0.78rem;color:var(--ink-muted);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);background:var(--white)}
+.breadcrumb a{color:var(--ink-muted);text-decoration:none;transition:color 0.15s}
+.breadcrumb a:hover{color:var(--olive)}
+.breadcrumb svg{width:12px;height:12px;stroke:var(--ink-muted)}
+
+/* PAGE HEADER */
+.page-header{padding:56px 56px 40px;max-width:1400px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.page-header h1{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1}
+.page-header h1 em{font-style:italic;color:var(--olive)}
+.page-header p{font-size:0.92rem;color:var(--ink-muted);line-height:1.7;max-width:400px;margin-top:10px}
+.filter-bar{display:flex;gap:8px;flex-shrink:0}
+.filter-btn{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:transparent;font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--ink-muted);cursor:pointer;transition:all 0.15s var(--ease)}
+.filter-btn:hover{border-color:var(--olive);color:var(--olive)}
+.filter-btn.active{background:var(--olive);border-color:var(--olive);color:white}
+
+/* PRODUCTS GRID */
+.products-wrap{max-width:1400px;margin:0 auto;padding:0 56px 100px}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.pcard{background:var(--white);border-radius:20px;overflow:hidden;border:1px solid var(--border);transition:transform 0.2s var(--ease),box-shadow 0.2s var(--ease);cursor:pointer;text-decoration:none;color:inherit;display:block}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(43,42,34,0.1)}
+.pcard-img{aspect-ratio:4/3;background:linear-gradient(135deg,var(--olive),var(--olive-dark));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.pcard-img::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 2px,transparent 2px,transparent 14px)}
+.pcard-img svg{width:32px;height:32px;stroke:rgba(244,238,226,0.4)}
+.pcard-img span{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,238,226,0.45)}
+.pcard-badge{position:absolute;top:14px;left:14px;padding:4px 10px;border-radius:50px;font-size:0.65rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+.badge-popular{background:#C8943A;color:white}
+.badge-new{background:var(--olive);color:white}
+.pcard-body{padding:22px 22px 26px}
+.pcard-cat{font-size:0.65rem;font-weight:600;color:var(--olive);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+.pcard-name{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.25}
+.pcard-desc{font-size:0.82rem;color:var(--ink-muted);line-height:1.6;margin-bottom:18px}
+.pcard-footer{display:flex;align-items:center;justify-content:space-between}
+.pcard-price{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--olive)}
+.pcard-price small{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--ink-muted);font-weight:300;margin-left:3px}
+.pcard-price .old-price{font-size:0.82rem;color:var(--ink-muted);text-decoration:line-through;font-family:'Inter',sans-serif;font-weight:300;margin-right:6px}
+.add-btn{padding:9px 18px;background:var(--olive);border:none;border-radius:8px;color:white;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:500;cursor:pointer;transition:background 0.15s,transform 0.1s;display:flex;align-items:center;gap:6px}
+.add-btn:hover{background:var(--olive-dark);transform:scale(1.03)}
+.add-btn:active{transform:scale(0.97)}
+.add-btn svg{width:14px;height:14px;stroke:white}
+.add-btn.added{background:#2E7D32}
+
+/* PROMO BANNER */
+.promo-banner{background:var(--olive);color:var(--cream);border-radius:20px;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:32px}
+.promo-banner h3{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;margin-bottom:6px}
+.promo-banner p{font-size:0.85rem;color:rgba(244,238,226,0.75);line-height:1.5}
+.promo-code{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:8px 20px;font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;letter-spacing:0.1em;color:white;cursor:default}
+
+/* CARRITO SIDEBAR */
+.cart-overlay{position:fixed;inset:0;background:rgba(43,42,34,0.5);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.25s var(--ease)}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:420px;background:var(--white);z-index:201;transform:translateX(100%);transition:transform 0.3s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(43,42,34,0.15)}
+.cart-sidebar.open{transform:translateX(0)}
+.cart-header{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-header h3{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700}
+.cart-close{background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;transition:background 0.15s;display:flex}
+.cart-close:hover{background:var(--cream)}
+.cart-close svg{width:20px;height:20px;stroke:var(--ink)}
+.cart-items{flex:1;overflow-y:auto;padding:20px 28px}
+.cart-empty{text-align:center;padding:60px 0;color:var(--ink-muted)}
+.cart-empty svg{width:48px;height:48px;stroke:var(--border);margin-bottom:14px}
+.cart-empty p{font-size:0.88rem}
+.cart-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--border)}
+.cart-item-img{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,var(--olive),var(--olive-dark));flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.cart-item-img svg{width:24px;height:24px;stroke:rgba(244,238,226,0.5)}
+.cart-item-info{flex:1}
+.cart-item-name{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:600;color:var(--ink);margin-bottom:4px}
+.cart-item-price{font-size:0.82rem;color:var(--olive);font-weight:500}
+.cart-item-controls{display:flex;align-items:center;gap:10px;margin-top:10px}
+.qty-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--ink);transition:background 0.15s}
+.qty-btn:hover{background:var(--cream)}
+.qty-num{font-size:0.88rem;font-weight:600;min-width:20px;text-align:center}
+.cart-item-remove{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--ink-muted);font-size:0.75rem;transition:color 0.15s}
+.cart-item-remove:hover{color:#C0392B}
+.cart-footer{padding:20px 28px;border-top:1px solid var(--border)}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:0.88rem;color:var(--ink-muted)}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.cart-total span:first-child{font-family:'Fraunces',serif;font-size:1rem;font-weight:700}
+.cart-total span:last-child{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--olive)}
+.cart-checkout-btn{width:100%;padding:15px;background:var(--olive);border:none;border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s,transform 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.cart-checkout-btn:hover{background:var(--olive-dark);transform:translateY(-1px)}
+.cart-checkout-btn svg{width:16px;height:16px;stroke:white}
+.cart-keep{width:100%;padding:11px;background:transparent;border:none;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--ink-muted);cursor:pointer;margin-top:8px;transition:color 0.15s}
+.cart-keep:hover{color:var(--olive)}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:199;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.45);cursor:pointer;border:none;transition:transform 0.2s,box-shadow 0.2s;animation:waPulse 2.5s ease infinite}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:28px;height:28px;fill:white}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.45)}50%{box-shadow:0 4px 32px rgba(37,211,102,0.75),0 0 0 8px rgba(37,211,102,0.1)}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.45s var(--ease),transform 0.45s var(--ease)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:960px){
+  nav{padding:14px 20px}.nav-links{display:none}
+  .breadcrumb{padding:12px 20px}
+  .page-header{padding:36px 20px 24px;flex-direction:column;align-items:flex-start}
+  .products-wrap{padding:0 20px 80px}
+  .products-grid{grid-template-columns:1fr 1fr}
+  .cart-sidebar{width:100%}
+}
+@media(max-width:600px){.products-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#F4EEE2"/><circle cx="22" cy="8" r="3" fill="#F4EEE2"/><circle cx="6" cy="15" r="2.5" fill="#F4EEE2"/><circle cx="26" cy="15" r="2.5" fill="#F4EEE2"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#F4EEE2"/></svg>
+    </div>
+    <div class="nav-brand">
+      <strong>Field Dogg</strong>
+      <span>Alimentos del Valle Moreno</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="productos.html" class="active">Productos</a></li>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="index.html#reparto">Reparto</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-cart" id="cartBtn" onclick="openCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Carrito
+      <span class="cart-badge hidden" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">Inicio</a>
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  <span>Productos</span>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <h1>Nuestros <em>productos</em></h1>
+    <p>Alimento natural, producido localmente en San Carlos. Sin intermediarios, sin relleno — solo lo mejor para tu perro.</p>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="adulto">Adulto</button>
+    <button class="filter-btn" data-filter="cachorro">Cachorro</button>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-wrap">
+
+  <!-- PROMO -->
+  <div class="promo-banner reveal">
+    <div>
+      <h3>🐾 Lleva 2 sacos y te hacemos descuento</h3>
+      <p>Compra 2 sacos de cualquier tamaño y coordinamos un precio especial. Escríbenos antes de pedir.</p>
+    </div>
+    <div class="promo-code">COMBO x2</div>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- PRODUCTO 1 -->
+    <div class="pcard reveal" data-cat="adulto">
+      <div class="pcard-img">
+        <div class="pcard-badge badge-popular">⭐ Más pedido</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+        <span>foto saco 25 kg</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Adulto</p>
+        <h3 class="pcard-name">Saco 25 kg</h3>
+        <p class="pcard-desc">Para perros adultos de cualquier raza. Rinde entre 1 y 2 meses según el tamaño de tu mascota.</p>
+        <div class="pcard-footer">
+          <div class="pcard-price">
+            $XX.XXX<small>/saco</small>
+          </div>
+          <button class="add-btn" onclick="addToCart('Saco 25 kg', 'XX.XXX', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTO 2 -->
+    <div class="pcard reveal" data-cat="adulto">
+      <div class="pcard-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+        <span>foto saco 15 kg</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Adulto</p>
+        <h3 class="pcard-name">Saco 15 kg</h3>
+        <p class="pcard-desc">El formato ideal para uno o dos perros medianos. El equilibrio perfecto entre precio y rendimiento.</p>
+        <div class="pcard-footer">
+          <div class="pcard-price">$XX.XXX<small>/saco</small></div>
+          <button class="add-btn" onclick="addToCart('Saco 15 kg', 'XX.XXX', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTO 3 -->
+    <div class="pcard reveal" data-cat="cachorro">
+      <div class="pcard-img">
+        <div class="pcard-badge badge-new">Cachorro</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+        <span>foto saco 10 kg</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Cachorro</p>
+        <h3 class="pcard-name">Saco 10 kg</h3>
+        <p class="pcard-desc">Formulado para las primeras etapas. Perfecto para cachorros en crecimiento o para probar por primera vez.</p>
+        <div class="pcard-footer">
+          <div class="pcard-price">$XX.XXX<small>/saco</small></div>
+          <button class="add-btn" onclick="addToCart('Saco 10 kg', 'XX.XXX', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CARRITO SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>Tu carrito 🛒</h3>
+    <button class="cart-close" onclick="closeCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <p>Tu carrito está vacío</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">$0</span>
+    </div>
+    <div class="cart-subtotal">
+      <span>Envío</span>
+      <span>A coordinar</span>
+    </div>
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">$0</span>
+    </div>
+    <button class="cart-checkout-btn" onclick="window.location.href='carrito.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Ir al carrito
+    </button>
+    <button class="cart-keep" onclick="closeCart()">Seguir comprando</button>
+  </div>
+</div>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/56984327516?text=Hola!%20Quiero%20consultar%20por%20sus%20productos." target="_blank" style="text-decoration:none">
+  <button class="wa-float">
+    <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.72.45 3.4 1.3 4.88L2 22l5.35-1.4c1.42.78 3.02 1.19 4.66 1.19h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.05 2zm5.79 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.55-1.17-2.97s.74-2.1 1-2.39c.26-.28.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.1.19-.15.31-.29.47-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.64-.14.26.09 1.66.78 1.95.93.28.14.47.21.54.33.07.12.07.69-.17 1.37z"/></svg>
+  </button>
+</a>
+
+<script>
+// CARRITO STATE
+let cart = JSON.parse(localStorage.getItem('fd_cart') || '[]');
+
+function saveCart(){ localStorage.setItem('fd_cart', JSON.stringify(cart)); }
+
+function updateBadge(){
+  const badge = document.getElementById('cartBadge');
+  const total = cart.reduce((s,i) => s + i.qty, 0);
+  badge.textContent = total;
+  badge.classList.toggle('hidden', total === 0);
+}
+
+function addToCart(name, price, btn){
+  const existing = cart.find(i => i.name === name);
+  if(existing){ existing.qty++; } else { cart.push({ name, price, qty: 1 }); }
+  saveCart(); updateBadge(); renderCart();
+  btn.textContent = '✓ Agregado';
+  btn.classList.add('added');
+  setTimeout(() => { btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Agregar'; btn.classList.remove('added'); }, 1500);
+  openCart();
+}
+
+function renderCart(){
+  const container = document.getElementById('cartItems');
+  const empty = document.getElementById('cartEmpty');
+  const footer = document.getElementById('cartFooter');
+  if(cart.length === 0){
+    empty.style.display = 'block'; footer.style.display = 'none';
+    container.innerHTML = ''; container.appendChild(empty); return;
+  }
+  empty.style.display = 'none'; footer.style.display = 'block';
+  const items = cart.map((item,i) => `
+    <div class="cart-item">
+      <div class="cart-item-img"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${item.price} / saco</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+          <button class="cart-item-remove" onclick="removeItem(${i})">Eliminar</button>
+        </div>
+      </div>
+    </div>`).join('');
+  container.innerHTML = items;
+  document.getElementById('cartSubtotal').textContent = 'A confirmar';
+  document.getElementById('cartTotal').textContent = 'A confirmar';
+}
+
+function changeQty(i, delta){
+  cart[i].qty += delta;
+  if(cart[i].qty <= 0) cart.splice(i,1);
+  saveCart(); updateBadge(); renderCart();
+}
+function removeItem(i){ cart.splice(i,1); saveCart(); updateBadge(); renderCart(); }
+function openCart(){ document.getElementById('cartOverlay').classList.add('open'); document.getElementById('cartSidebar').classList.add('open'); }
+function closeCart(){ document.getElementById('cartOverlay').classList.remove('open'); document.getElementById('cartSidebar').classList.remove('open'); }
+
+// FILTERS
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.pcard').forEach(card => {
+      card.style.display = (filter === 'todos' || card.dataset.cat === filter) ? 'block' : 'none';
+    });
+  });
+});
+
+// REVEAL
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }});
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// INIT
+updateBadge(); renderCart();
+</script>
+</body>
+</html>
