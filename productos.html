@@ -6,10 +6,26 @@
 <title>Productos — Field Dogg</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+
 :root {
-  --cream: #F4EEE2; --cream-dark: #EAE1CE; --olive: #4A5D3A; --olive-dark: #36462A;
-  --terracotta: #B5673A; --ink: #2B2A24; --ink-muted: #6B6555; --border: rgba(43,42,36,0.12);
-  --white: #FFFDF8; --ease: cubic-bezier(0.25,0,0,1);
+  --beeswax:        #EAB05C;
+  --grenadine:      #D95122;
+  --grenadine-dark: #B8421A;
+  --darlington:     #B6CFB9;
+  --darlington-dark:#8AAE8E;
+  --cafe-latte:     #896645;
+  --cafe-dark:      #6A4F34;
+  --cream:          #FDF6EC;
+  --cream-dark:     #F5ECD8;
+  --ink:            #2C2118;
+  --ink-muted:      #7A6A58;
+  --border:         rgba(44,33,24,0.12);
+  --white:          #FFFDF8;
+  /* aliases */
+  --olive:          #D95122;
+  --olive-dark:     #B8421A;
+  --terracotta:     #D95122;
+  --terracotta-dark:#B8421A;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -28,9 +44,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .nav-links a:hover,.nav-links a.active{color:var(--olive);font-weight:500}
 .nav-right{display:flex;align-items:center;gap:16px}
 .nav-cart{position:relative;background:none;border:1.5px solid var(--border);border-radius:10px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--ink);transition:border-color 0.15s,background 0.15s}
-.nav-cart:hover{border-color:var(--olive);background:rgba(74,93,58,0.05)}
+.nav-cart:hover{border-color:var(--olive);background:rgba(217,81,34,0.05)}
 .nav-cart svg{width:17px;height:17px;stroke:var(--ink)}
-.cart-badge{background:var(--olive);color:white;border-radius:50%;width:18px;height:18px;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;top:-7px;right:-7px}
+.cart-badge{background:#D95122;color:white;border-radius:50%;width:18px;height:18px;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;top:-7px;right:-7px}
 .cart-badge.hidden{display:none}
 
 /* BREADCRUMB */
@@ -47,7 +63,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .filter-bar{display:flex;gap:8px;flex-shrink:0}
 .filter-btn{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:transparent;font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--ink-muted);cursor:pointer;transition:all 0.15s var(--ease)}
 .filter-btn:hover{border-color:var(--olive);color:var(--olive)}
-.filter-btn.active{background:var(--olive);border-color:var(--olive);color:white}
+.filter-btn.active{background:#D95122;border-color:#D95122;color:white}
 
 /* PRODUCTS GRID */
 .products-wrap{max-width:1400px;margin:0 auto;padding:0 56px 100px}
@@ -60,7 +76,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .pcard-img svg{width:32px;height:32px;stroke:rgba(244,238,226,0.4)}
 .pcard-img span{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,238,226,0.45)}
 .pcard-badge{position:absolute;top:14px;left:14px;padding:4px 10px;border-radius:50px;font-size:0.65rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
-.badge-popular{background:#C8943A;color:white}
+.badge-popular{background:#D95122;color:white}
 .badge-new{background:var(--olive);color:white}
 .pcard-body{padding:22px 22px 26px}
 .pcard-cat{font-size:0.65rem;font-weight:600;color:var(--olive);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
@@ -74,7 +90,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .add-btn:hover{background:var(--olive-dark);transform:scale(1.03)}
 .add-btn:active{transform:scale(0.97)}
 .add-btn svg{width:14px;height:14px;stroke:white}
-.add-btn.added{background:#2E7D32}
+.add-btn.added{background:#B8421A}
 
 /* PROMO BANNER */
 .promo-banner{background:var(--olive);color:var(--cream);border-radius:20px;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:32px}
@@ -112,9 +128,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:0.88rem;color:var(--ink-muted)}
 .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .cart-total span:first-child{font-family:'Fraunces',serif;font-size:1rem;font-weight:700}
-.cart-total span:last-child{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--olive)}
+.cart-total span:last-child{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:#D95122}
 .cart-checkout-btn{width:100%;padding:15px;background:var(--olive);border:none;border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s,transform 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.cart-checkout-btn:hover{background:var(--olive-dark);transform:translateY(-1px)}
+.cart-checkout-btn:hover{background:#B8421A;transform:translateY(-1px)}
 .cart-checkout-btn svg{width:16px;height:16px;stroke:white}
 .cart-keep{width:100%;padding:11px;background:transparent;border:none;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--ink-muted);cursor:pointer;margin-top:8px;transition:color 0.15s}
 .cart-keep:hover{color:var(--olive)}
@@ -146,7 +162,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 <nav>
   <a class="nav-logo" href="index.html">
     <div class="nav-logo-mark">
-      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#F4EEE2"/><circle cx="22" cy="8" r="3" fill="#F4EEE2"/><circle cx="6" cy="15" r="2.5" fill="#F4EEE2"/><circle cx="26" cy="15" r="2.5" fill="#F4EEE2"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#F4EEE2"/></svg>
+      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#FDF6EC"/><circle cx="22" cy="8" r="3" fill="#FDF6EC"/><circle cx="6" cy="15" r="2.5" fill="#FDF6EC"/><circle cx="26" cy="15" r="2.5" fill="#FDF6EC"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#FDF6EC"/></svg>
     </div>
     <div class="nav-brand">
       <strong>Field Dogg</strong>

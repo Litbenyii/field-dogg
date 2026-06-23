@@ -6,7 +6,27 @@
 <title>¡Pedido confirmado! — Field Dogg</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#F4EEE2;--cream-dark:#EAE1CE;--olive:#4A5D3A;--olive-dark:#36462A;--ink:#2B2A24;--ink-muted:#6B6555;--border:rgba(43,42,36,0.12);--white:#FFFDF8;--ease:cubic-bezier(0.25,0,0,1)}
+
+:root {
+  --beeswax:        #EAB05C;
+  --grenadine:      #D95122;
+  --grenadine-dark: #B8421A;
+  --darlington:     #B6CFB9;
+  --darlington-dark:#8AAE8E;
+  --cafe-latte:     #896645;
+  --cafe-dark:      #6A4F34;
+  --cream:          #FDF6EC;
+  --cream-dark:     #F5ECD8;
+  --ink:            #2C2118;
+  --ink-muted:      #7A6A58;
+  --border:         rgba(44,33,24,0.12);
+  --white:          #FFFDF8;
+  /* aliases */
+  --olive:          #D95122;
+  --olive-dark:     #B8421A;
+  --terracotta:     #D95122;
+  --terracotta-dark:#B8421A;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
 h1,h2,h3{font-family:'Fraunces',serif}
@@ -26,7 +46,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 5
 .step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
 .step.done .step-circle{background:var(--olive);color:white}
 .step-label{font-size:0.78rem;font-weight:500;color:var(--ink-muted)}
-.step.done .step-label{color:var(--olive);font-weight:600}
+.step.done .step-label{color:#D95122;font-weight:600}
 .step-line{flex:1;height:1px;background:var(--border);margin:0 8px}
 .step-line.done{background:var(--olive)}
 
@@ -35,8 +55,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 5
 .success-card{background:var(--white);border:1px solid var(--border);border-radius:28px;padding:56px 48px;max-width:640px;width:100%;text-align:center}
 
 /* SUCCESS ANIMATION */
-.success-icon{width:88px;height:88px;border-radius:50%;background:rgba(74,93,58,0.1);border:2px solid rgba(74,93,58,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:scaleIn 0.5s var(--ease) forwards}
-.success-icon svg{width:44px;height:44px;stroke:var(--olive);stroke-width:2;stroke-dasharray:60;stroke-dashoffset:60;animation:drawCheck 0.5s 0.3s ease forwards}
+.success-icon{width:88px;height:88px;border-radius:50%;background:rgba(217,81,34,0.1);border:2px solid rgba(217,81,34,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:scaleIn 0.5s var(--ease) forwards}
+.success-icon svg{width:44px;height:44px;stroke:#D95122;stroke-width:2;stroke-dasharray:60;stroke-dashoffset:60;animation:drawCheck 0.5s 0.3s ease forwards}
 @keyframes scaleIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes drawCheck{to{stroke-dashoffset:0}}
 
@@ -65,7 +85,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 5
 /* ACTIONS */
 .success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .btn-primary{padding:13px 26px;background:var(--olive);border:none;border-radius:10px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:background 0.15s,transform 0.15s}
-.btn-primary:hover{background:var(--olive-dark);transform:translateY(-1px)}
+.btn-primary:hover{background:#B8421A;transform:translateY(-1px)}
 .btn-primary svg{width:16px;height:16px;fill:white}
 .btn-ghost{padding:13px 26px;background:transparent;border:1.5px solid var(--border);border-radius:10px;color:var(--ink);font-family:'Inter',sans-serif;font-size:0.85rem;cursor:pointer;text-decoration:none;transition:border-color 0.15s,color 0.15s}
 .btn-ghost:hover{border-color:var(--olive);color:var(--olive)}
@@ -84,7 +104,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 5
 <nav>
   <a class="nav-logo" href="index.html">
     <div class="nav-logo-mark">
-      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#F4EEE2"/><circle cx="22" cy="8" r="3" fill="#F4EEE2"/><circle cx="6" cy="15" r="2.5" fill="#F4EEE2"/><circle cx="26" cy="15" r="2.5" fill="#F4EEE2"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#F4EEE2"/></svg>
+      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#FDF6EC"/><circle cx="22" cy="8" r="3" fill="#FDF6EC"/><circle cx="6" cy="15" r="2.5" fill="#FDF6EC"/><circle cx="26" cy="15" r="2.5" fill="#FDF6EC"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#FDF6EC"/></svg>
     </div>
     <div class="nav-brand">
       <strong>Field Dogg</strong>

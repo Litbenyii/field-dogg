@@ -6,7 +6,27 @@
 <title>Carrito — Field Dogg</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#F4EEE2;--cream-dark:#EAE1CE;--olive:#4A5D3A;--olive-dark:#36462A;--terracotta:#B5673A;--ink:#2B2A24;--ink-muted:#6B6555;--border:rgba(43,42,36,0.12);--white:#FFFDF8;--ease:cubic-bezier(0.25,0,0,1)}
+
+:root {
+  --beeswax:        #EAB05C;
+  --grenadine:      #D95122;
+  --grenadine-dark: #B8421A;
+  --darlington:     #B6CFB9;
+  --darlington-dark:#8AAE8E;
+  --cafe-latte:     #896645;
+  --cafe-dark:      #6A4F34;
+  --cream:          #FDF6EC;
+  --cream-dark:     #F5ECD8;
+  --ink:            #2C2118;
+  --ink-muted:      #7A6A58;
+  --border:         rgba(44,33,24,0.12);
+  --white:          #FFFDF8;
+  /* aliases */
+  --olive:          #D95122;
+  --olive-dark:     #B8421A;
+  --terracotta:     #D95122;
+  --terracotta-dark:#B8421A;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
@@ -34,11 +54,11 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .steps-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:0}
 .step{display:flex;align-items:center;gap:10px;flex:1}
 .step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;transition:all 0.2s}
-.step.active .step-circle{background:var(--olive);color:white}
-.step.done .step-circle{background:var(--olive);color:white}
+.step.active .step-circle{background:#D95122;color:white}
+.step.done .step-circle{background:#D95122;color:white}
 .step:not(.active):not(.done) .step-circle{background:var(--cream-dark);color:var(--ink-muted)}
 .step-label{font-size:0.78rem;font-weight:500;color:var(--ink-muted)}
-.step.active .step-label{color:var(--olive);font-weight:600}
+.step.active .step-label{color:#D95122;font-weight:600}
 .step.done .step-label{color:var(--olive)}
 .step-line{flex:1;height:1px;background:var(--border);margin:0 8px}
 .step-line.done{background:var(--olive)}
@@ -69,7 +89,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .cart-empty-state h3{font-size:1.2rem;margin-bottom:10px}
 .cart-empty-state p{font-size:0.88rem;color:var(--ink-muted);margin-bottom:24px}
 .btn-primary{padding:13px 28px;background:var(--olive);border:none;border-radius:10px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:background 0.15s,transform 0.15s;display:inline-flex;align-items:center;gap:8px}
-.btn-primary:hover{background:var(--olive-dark);transform:translateY(-1px)}
+.btn-primary:hover{background:#B8421A;transform:translateY(-1px)}
 .btn-primary svg{width:15px;height:15px;stroke:white}
 .cart-actions{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
 .btn-ghost{padding:12px 24px;background:transparent;border:1.5px solid var(--border);border-radius:10px;color:var(--ink-muted);font-family:'Inter',sans-serif;font-size:0.82rem;cursor:pointer;transition:border-color 0.15s,color 0.15s}
@@ -91,9 +111,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .summary-row span:last-child{font-weight:500;color:var(--ink)}
 .summary-row.total{border-top:1px solid var(--border);padding-top:16px;margin-top:8px}
 .summary-row.total span:first-child{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--ink)}
-.summary-row.total span:last-child{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--olive)}
+.summary-row.total span:last-child{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:#D95122}
 .checkout-btn{width:100%;padding:16px;background:var(--olive);border:none;border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.15s,transform 0.15s,box-shadow 0.15s;margin-top:20px}
-.checkout-btn:hover{background:var(--olive-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,93,58,0.25)}
+.checkout-btn:hover{background:var(--olive-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(217,81,34,0.25)}
 .checkout-btn svg{width:17px;height:17px;stroke:white}
 .summary-note{font-size:0.75rem;color:var(--ink-muted);line-height:1.6;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
 .summary-note svg{width:13px;height:13px;stroke:var(--olive);vertical-align:-2px;margin-right:4px}
@@ -102,7 +122,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .trust-badge svg{width:16px;height:16px;stroke:var(--olive);flex-shrink:0}
 
 /* SHIPPING INFO */
-.shipping-info{background:rgba(74,93,58,0.06);border:1px solid rgba(74,93,58,0.18);border-radius:12px;padding:16px 18px;margin-top:16px;font-size:0.82rem;color:var(--ink-muted);line-height:1.6}
+.shipping-info{background:rgba(217,81,34,0.06);border:1px solid rgba(217,81,34,0.18);border-radius:12px;padding:16px 18px;margin-top:16px;font-size:0.82rem;color:var(--ink-muted);line-height:1.6}
 .shipping-info strong{color:var(--olive);display:block;margin-bottom:4px}
 
 /* WA FLOAT */
@@ -126,7 +146,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 <nav>
   <a class="nav-logo" href="index.html">
     <div class="nav-logo-mark">
-      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#F4EEE2"/><circle cx="22" cy="8" r="3" fill="#F4EEE2"/><circle cx="6" cy="15" r="2.5" fill="#F4EEE2"/><circle cx="26" cy="15" r="2.5" fill="#F4EEE2"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#F4EEE2"/></svg>
+      <svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="#FDF6EC"/><circle cx="22" cy="8" r="3" fill="#FDF6EC"/><circle cx="6" cy="15" r="2.5" fill="#FDF6EC"/><circle cx="26" cy="15" r="2.5" fill="#FDF6EC"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="#FDF6EC"/></svg>
     </div>
     <div class="nav-brand">
       <strong>Field Dogg</strong>
