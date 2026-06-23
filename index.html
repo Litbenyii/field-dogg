@@ -44,14 +44,18 @@
     </div>
   </div>
   <ul class="nav-links">
-    <li><a href="productos.html">Productos</a></li>
+    <li><a href="#" onclick="openShop();return false;">Productos</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#reparto">Zona de reparto</a></li>
-    <li><a href="productos.html">Hacer pedido</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
-  <button class="nav-cta" onclick="window.location.href='productos.html'">Ver productos →</button>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="nav-cart-btn" id="navCartBtn" onclick="openShop('cart')" style="display:none;background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;font-family:Inter,sans-serif;font-size:0.82rem;color:var(--ink)">
+      🛒 <span id="navCartCount">0</span>
+    </button>
+    <button class="nav-cta" onclick="openShop();return false;">Ver productos →</button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -61,11 +65,11 @@
     <h1>Alimento para perros, hecho con <em>dedicación real</em></h1>
     <p>Producimos y repartimos alimento de calidad para tu mejor amigo, directo desde San Carlos. Sin intermediarios, sin relleno — solo nutrición de verdad, al precio justo.</p>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="window.location.href='productos.html'">
+      <button class="btn-primary" onclick="openShop();return false;">
         Hacer un pedido
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <button class="btn-secondary" onclick="window.location.href='productos.html'">Ver productos</button>
+      <button class="btn-secondary" onclick="openShop();return false;">Ver productos</button>
     </div>
     <div class="hero-trust">
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Producción propia</div>
@@ -123,7 +127,7 @@
         <div class="product-footer">
           <div class="product-price">$XX.XXX <span>/saco</span></div>
           <a href="https://wa.me/56984327516?text=Hola!%20Quiero%20pedir%20un%20saco%20de%2025%20kg%20(Adulto).%20%C2%BFTienen%20stock%20disponible%3F" target="_blank" rel="noopener">
-            <button class="product-btn">Pedir →</button>
+            <button class="product-btn" onclick="openShop();event.preventDefault()">Ver en tienda →</button>
           </a>
         </div>
       </div>
@@ -142,7 +146,7 @@
         <div class="product-footer">
           <div class="product-price">$XX.XXX <span>/saco</span></div>
           <a href="https://wa.me/56984327516?text=Hola!%20Quiero%20pedir%20un%20saco%20de%2015%20kg%20(Tama%C3%B1o%20medio).%20%C2%BFTienen%20stock%20disponible%3F" target="_blank" rel="noopener">
-            <button class="product-btn">Pedir →</button>
+            <button class="product-btn" onclick="openShop();event.preventDefault()">Ver en tienda →</button>
           </a>
         </div>
       </div>
@@ -161,7 +165,7 @@
         <div class="product-footer">
           <div class="product-price">$XX.XXX <span>/saco</span></div>
           <a href="https://wa.me/56984327516?text=Hola!%20Quiero%20pedir%20un%20saco%20de%2010%20kg%20(Cachorro).%20%C2%BFTienen%20stock%20disponible%3F" target="_blank" rel="noopener">
-            <button class="product-btn">Pedir →</button>
+            <button class="product-btn" onclick="openShop();event.preventDefault()">Ver en tienda →</button>
           </a>
         </div>
       </div>
@@ -431,7 +435,7 @@
   </div>
   <div class="footer-copy">© 2026 Field Dogg — Alimentos del Valle Moreno</div>
   <div class="footer-links">
-    <a href="productos.html">Productos</a>
+    <a href="#" onclick="openShop();return false;">Productos</a>
     <a href="#nosotros">Nosotros</a>
     <a href="#reparto">Reparto</a>
     <a href="#faq">FAQ</a>
@@ -484,6 +488,127 @@ document.getElementById('formBtn').addEventListener('click', () => {
   setTimeout(() => window.open(url, '_blank'), 400);
 });
 
+
+// ═══ SHOP MODAL ═══
+let mCart = JSON.parse(localStorage.getItem('fd_cart') || '[]');
+
+function openShop(view) {
+  const overlay = document.getElementById('shopOverlay');
+  const modal   = document.getElementById('shopModal');
+  overlay.style.display = 'block';
+  modal.style.display   = 'flex';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    modal.style.opacity   = '1';
+    modal.style.transform = 'translate(-50%,-50%) scale(1)';
+  });
+  updateModalCart();
+  if (view === 'cart' && mCart.length > 0) openCartPanel();
+}
+
+function closeShop() {
+  const overlay = document.getElementById('shopOverlay');
+  const modal   = document.getElementById('shopModal');
+  overlay.style.opacity = '0';
+  modal.style.opacity   = '0';
+  modal.style.transform = 'translate(-50%,-50%) scale(0.96)';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    modal.style.display   = 'none';
+    document.body.style.overflow = '';
+  }, 300);
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeShop(); });
+
+function openCartPanel() {
+  document.getElementById('modalCartPanel').style.width = '300px';
+}
+function closeCartPanel() {
+  document.getElementById('modalCartPanel').style.width = '0';
+}
+function toggleCart() {
+  const panel = document.getElementById('modalCartPanel');
+  panel.style.width = panel.style.width === '300px' ? '0' : '300px';
+}
+
+function modalAddToCart(name, price, btn) {
+  const ex = mCart.find(i => i.name === name);
+  if (ex) ex.qty++; else mCart.push({ name, price, qty: 1 });
+  localStorage.setItem('fd_cart', JSON.stringify(mCart));
+  btn.textContent = '✓ Agregado';
+  btn.classList.add('added');
+  setTimeout(() => { btn.textContent = '+ Agregar'; btn.classList.remove('added'); }, 1400);
+  updateModalCart();
+  openCartPanel();
+}
+
+function updateModalCart() {
+  const total = mCart.reduce((s,i) => s + i.qty, 0);
+  // Nav cart badge
+  const navBtn = document.getElementById('navCartBtn');
+  const navCount = document.getElementById('navCartCount');
+  if (navBtn) { navBtn.style.display = total > 0 ? 'flex' : 'none'; if(navCount) navCount.textContent = total; }
+  // Modal cart badge
+  const mCount = document.getElementById('modalCartCount');
+  if (mCount) {
+    mCount.textContent = total;
+    mCount.style.display = total > 0 ? 'flex' : 'none';
+  }
+  // Cart items
+  const container = document.getElementById('modalCartItems');
+  const footer    = document.getElementById('modalCartFooter');
+  if (!container) return;
+  if (mCart.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 0;color:#7A6A58;font-size:0.85rem;font-family:Inter,sans-serif">Tu carrito está vacío<br><span style="font-size:1.5rem">🛒</span></div>';
+    if (footer) footer.style.display = 'none';
+    return;
+  }
+  container.innerHTML = mCart.map((item,i) => `
+    <div class="mcart-item">
+      <div class="mcart-item-img">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(253,246,236,0.4)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+      </div>
+      <div style="flex:1">
+        <div class="mcart-item-name">${item.name}</div>
+        <div class="mcart-item-price">$${item.price} / saco</div>
+        <div class="mcart-qty">
+          <button onclick="mChQty(${i},-1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="mChQty(${i},1)">+</button>
+          <button class="mcart-remove" onclick="mRemove(${i})">Eliminar</button>
+        </div>
+      </div>
+    </div>`).join('');
+  if (footer) footer.style.display = 'block';
+}
+
+function mChQty(i, d) {
+  mCart[i].qty += d;
+  if (mCart[i].qty <= 0) mCart.splice(i,1);
+  localStorage.setItem('fd_cart', JSON.stringify(mCart));
+  updateModalCart();
+}
+function mRemove(i) {
+  mCart.splice(i,1);
+  localStorage.setItem('fd_cart', JSON.stringify(mCart));
+  updateModalCart();
+}
+
+function filterProducts(btn) {
+  document.querySelectorAll('.mfilter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  document.querySelectorAll('.mpcard').forEach(card => {
+    card.style.display = (f === 'todos' || card.dataset.cat === f) ? 'block' : 'none';
+  });
+}
+
+// Sync cart on load
+updateModalCart();
+
+
 // Scroll reveal
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -496,6 +621,213 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 </script>
+
+
+<!-- ═══ SHOP MODAL ═══ -->
+<div id="shopOverlay" style="display:none;position:fixed;inset:0;background:rgba(44,33,24,0.55);z-index:500;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity 0.3s ease" onclick="closeShop()"></div>
+
+<div id="shopModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.96);z-index:501;width:min(1100px,95vw);height:min(88vh,860px);background:#FDF6EC;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(44,33,24,0.25);opacity:0;transition:opacity 0.3s ease,transform 0.3s ease;display:flex;flex-direction:column">
+
+  <!-- Modal header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid rgba(44,33,24,0.1);background:#FDF6EC;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="width:34px;height:34px;border-radius:9px;background:#D95122;display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="8" r="3" fill="white"/><circle cx="22" cy="8" r="3" fill="white"/><circle cx="6" cy="15" r="2.5" fill="white"/><circle cx="26" cy="15" r="2.5" fill="white"/><ellipse cx="16" cy="23" rx="8" ry="7" fill="white"/></svg>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1rem;color:#2C2118">Nuestros productos</div>
+        <div style="font-size:0.62rem;color:#7A6A58;letter-spacing:0.06em">Field Dogg — Alimentos del Valle Moreno</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button id="modalCartToggle" onclick="toggleCart()" style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:none;border:1.5px solid rgba(44,33,24,0.12);border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;font-size:0.82rem;color:#2C2118;transition:all 0.15s">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Carrito <span id="modalCartCount" style="background:#D95122;color:white;border-radius:50%;width:18px;height:18px;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center">0</span>
+      </button>
+      <button onclick="closeShop()" style="width:36px;height:36px;border-radius:8px;background:rgba(44,33,24,0.06);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s" onmouseover="this.style.background='rgba(44,33,24,0.1)'" onmouseout="this.style.background='rgba(44,33,24,0.06)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2C2118" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal body: productos + carrito sidebar -->
+  <div style="display:flex;flex:1;overflow:hidden">
+
+    <!-- PRODUCTOS PANEL -->
+    <div id="shopProducts" style="flex:1;overflow-y:auto;padding:28px 32px">
+
+      <!-- Filtros -->
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <p style="font-size:0.88rem;color:#7A6A58;font-family:Inter,sans-serif">Alimento natural, producido localmente en San Carlos.</p>
+        <div style="display:flex;gap:8px">
+          <button class="mfilter active" data-filter="todos" onclick="filterProducts(this)">Todos</button>
+          <button class="mfilter" data-filter="adulto" onclick="filterProducts(this)">Adulto</button>
+          <button class="mfilter" data-filter="cachorro" onclick="filterProducts(this)">Cachorro</button>
+        </div>
+      </div>
+
+      <!-- Promo -->
+      <div style="background:#D95122;border-radius:14px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px">
+        <div>
+          <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:4px">🐾 Lleva 2 sacos y te hacemos descuento</div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.8)">Compra 2 o más y coordinamos precio especial. Escríbenos antes de pedir.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:6px 16px;font-family:'Fraunces',serif;font-weight:700;font-size:0.95rem;color:white;white-space:nowrap">COMBO x2</div>
+      </div>
+
+      <!-- Grid productos -->
+      <div id="modalProductGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+
+        <div class="mpcard" data-cat="adulto">
+          <div class="mpcard-img">
+            <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,246,236,0.4);text-align:center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(253,246,236,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+              <div style="margin-top:6px">foto saco 25 kg</div>
+            </div>
+            <div class="mpcard-badge" style="background:#EAB05C">⭐ Más pedido</div>
+          </div>
+          <div class="mpcard-body">
+            <div class="mpcard-cat">Adulto</div>
+            <h3 class="mpcard-name">Saco 25 kg</h3>
+            <p class="mpcard-desc">Para perros adultos de cualquier raza. Rinde 1 a 2 meses según el tamaño de tu mascota.</p>
+            <div class="mpcard-footer">
+              <div class="mpcard-price">$XX.XXX<small>/saco</small></div>
+              <button class="madd-btn" onclick="modalAddToCart('Saco 25 kg','XX.XXX',this)">+ Agregar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mpcard" data-cat="adulto">
+          <div class="mpcard-img">
+            <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,246,236,0.4);text-align:center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(253,246,236,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+              <div style="margin-top:6px">foto saco 15 kg</div>
+            </div>
+          </div>
+          <div class="mpcard-body">
+            <div class="mpcard-cat">Adulto</div>
+            <h3 class="mpcard-name">Saco 15 kg</h3>
+            <p class="mpcard-desc">El más pedido. Ideal para uno o dos perros medianos. Precio y rendimiento en equilibrio.</p>
+            <div class="mpcard-footer">
+              <div class="mpcard-price">$XX.XXX<small>/saco</small></div>
+              <button class="madd-btn" onclick="modalAddToCart('Saco 15 kg','XX.XXX',this)">+ Agregar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mpcard" data-cat="cachorro">
+          <div class="mpcard-img">
+            <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,246,236,0.4);text-align:center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(253,246,236,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+              <div style="margin-top:6px">foto saco 10 kg</div>
+            </div>
+            <div class="mpcard-badge" style="background:#896645">Cachorro</div>
+          </div>
+          <div class="mpcard-body">
+            <div class="mpcard-cat">Cachorro</div>
+            <h3 class="mpcard-name">Saco 10 kg</h3>
+            <p class="mpcard-desc">Para las primeras etapas. Formato más chico, ideal para probar y para cachorros activos.</p>
+            <div class="mpcard-footer">
+              <div class="mpcard-price">$XX.XXX<small>/saco</small></div>
+              <button class="madd-btn" onclick="modalAddToCart('Saco 10 kg','XX.XXX',this)">+ Agregar</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CARRITO SIDEBAR (dentro del modal) -->
+    <div id="modalCartPanel" style="width:0;overflow:hidden;transition:width 0.3s ease;border-left:1px solid rgba(44,33,24,0.1);background:#FFFDF8;display:flex;flex-direction:column;flex-shrink:0">
+      <div style="padding:20px 20px 12px;border-bottom:1px solid rgba(44,33,24,0.08);flex-shrink:0">
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1rem;color:#2C2118">Tu carrito</div>
+      </div>
+      <div id="modalCartItems" style="flex:1;overflow-y:auto;padding:16px 20px"></div>
+      <div id="modalCartFooter" style="padding:16px 20px;border-top:1px solid rgba(44,33,24,0.08);display:none;flex-shrink:0">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.82rem;color:#7A6A58;font-family:Inter,sans-serif">
+          <span>Subtotal</span><span>A confirmar</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.82rem;color:#7A6A58;font-family:Inter,sans-serif">
+          <span>Envío</span><span>A coordinar</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:16px;font-family:'Fraunces',serif">
+          <span style="font-weight:700;font-size:0.95rem">Total</span>
+          <span style="font-weight:700;font-size:1.2rem;color:#D95122">A confirmar</span>
+        </div>
+        <button onclick="window.location.href='checkout.html'" style="width:100%;padding:13px;background:#D95122;border:none;border-radius:10px;color:white;font-family:Inter,sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.15s" onmouseover="this.style.background='#B8421A'" onmouseout="this.style.background='#D95122'">
+          Finalizar pedido →
+        </button>
+        <button onclick="toggleCart()" style="width:100%;margin-top:8px;padding:10px;background:none;border:none;font-family:Inter,sans-serif;font-size:0.8rem;color:#7A6A58;cursor:pointer">
+          Seguir comprando
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* MODAL PRODUCT STYLES */
+.mfilter {
+  padding:7px 16px;border-radius:50px;border:1.5px solid rgba(44,33,24,0.12);
+  background:transparent;font-family:Inter,sans-serif;font-size:0.76rem;
+  color:#7A6A58;cursor:pointer;transition:all 0.15s;
+}
+.mfilter:hover { border-color:#D95122;color:#D95122; }
+.mfilter.active { background:#D95122;border-color:#D95122;color:white; }
+
+.mpcard {
+  background:white;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(44,33,24,0.1);
+  transition:transform 0.2s ease,box-shadow 0.2s ease;cursor:default;
+}
+.mpcard:hover { transform:translateY(-4px);box-shadow:0 12px 32px rgba(44,33,24,0.1); }
+.mpcard-img {
+  aspect-ratio:4/3;
+  background:linear-gradient(135deg,#D95122,#B8421A);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.mpcard-badge {
+  position:absolute;top:10px;left:10px;
+  padding:3px 9px;border-radius:50px;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.04em;
+  text-transform:uppercase;color:white;
+}
+.mpcard-body { padding:16px 16px 18px; }
+.mpcard-cat { font-size:0.62rem;font-weight:700;color:#D95122;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px; }
+.mpcard-name { font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:#2C2118;margin-bottom:6px; }
+.mpcard-desc { font-size:0.78rem;color:#7A6A58;line-height:1.55;margin-bottom:14px; }
+.mpcard-footer { display:flex;align-items:center;justify-content:space-between; }
+.mpcard-price { font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:#D95122; }
+.mpcard-price small { font-family:Inter,sans-serif;font-size:0.68rem;color:#7A6A58;font-weight:300;margin-left:2px; }
+.madd-btn {
+  padding:7px 14px;background:#D95122;border:none;border-radius:7px;
+  color:white;font-family:Inter,sans-serif;font-size:0.76rem;font-weight:600;
+  cursor:pointer;transition:background 0.15s,transform 0.1s;
+}
+.madd-btn:hover { background:#B8421A;transform:scale(1.03); }
+.madd-btn.added { background:#6A4F34; }
+
+/* Cart item inside modal */
+.mcart-item {
+  display:flex;gap:10px;padding:12px 0;
+  border-bottom:1px solid rgba(44,33,24,0.08);
+}
+.mcart-item-img {
+  width:52px;height:52px;border-radius:8px;
+  background:linear-gradient(135deg,#D95122,#B8421A);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+}
+.mcart-item-name { font-family:'Fraunces',serif;font-size:0.88rem;font-weight:600;color:#2C2118;margin-bottom:3px; }
+.mcart-item-price { font-size:0.75rem;color:#D95122;font-weight:500;margin-bottom:8px; }
+.mcart-qty { display:flex;align-items:center;gap:6px; }
+.mcart-qty button { width:24px;height:24px;border-radius:5px;border:1px solid rgba(44,33,24,0.12);background:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s; }
+.mcart-qty button:hover { background:#F5ECD8; }
+.mcart-qty span { font-size:0.82rem;font-weight:600;min-width:18px;text-align:center; }
+.mcart-remove { margin-left:auto;background:none;border:none;cursor:pointer;font-size:0.7rem;color:#7A6A58;align-self:flex-start;padding-top:2px;transition:color 0.15s; }
+.mcart-remove:hover { color:#C0392B; }
+</style>
 
 </body>
 </html>
