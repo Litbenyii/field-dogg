@@ -47,8 +47,8 @@
     <li><a href="#" onclick="openShop();return false;">Productos</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#reparto">Zona de reparto</a></li>
-    <li><a href="#faq">FAQ</a></li>
     <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px">
     <button class="nav-cart-btn" id="navCartBtn" onclick="openShop('cart')" style="display:none;background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;font-family:Inter,sans-serif;font-size:0.82rem;color:var(--ink)">
@@ -266,82 +266,6 @@
   </div>
 </section>
 
-<!-- FORMULARIO DE PEDIDO -->
-<section class="order-section" id="pedido">
-  <div class="order-inner">
-
-    <div class="order-info reveal">
-      <div class="section-eyebrow">Haz tu pedido</div>
-      <h2>Rellena el formulario<br>y te contactamos <em>al toque</em></h2>
-      <p>Completa los datos y te llegará un mensaje de WhatsApp listo para enviar. Nosotros confirmamos el pedido y coordinamos la entrega contigo.</p>
-      <div class="order-steps">
-        <div class="order-step"><div class="order-step-num">1</div> Rellenas el formulario con tus datos</div>
-        <div class="order-step"><div class="order-step-num">2</div> Se abre WhatsApp con tu pedido pre-armado</div>
-        <div class="order-step"><div class="order-step-num">3</div> Lo enviamos y confirmamos la entrega</div>
-      </div>
-    </div>
-
-    <div class="order-form reveal">
-      <div class="form-error" id="formError">Por favor completa todos los campos obligatorios.</div>
-      <div class="form-success" id="formSuccess">
-        <strong>✓ ¡Listo! Abriendo WhatsApp...</strong>
-        <span>Si no se abre automáticamente, escríbenos directamente al +56 9 8432 7516</span>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nombre *</label>
-          <input type="text" id="f-nombre" placeholder="Tu nombre completo">
-        </div>
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="tel" id="f-telefono" placeholder="+56 9 XXXX XXXX">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Dirección de entrega *</label>
-        <input type="text" id="f-direccion" placeholder="Calle, número, sector — San Carlos">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Producto *</label>
-          <select id="f-producto">
-            <option value="" disabled selected>Selecciona un saco</option>
-            <option value="Saco 25 kg (Adulto)">Saco 25 kg — Adulto</option>
-            <option value="Saco 15 kg (Tamaño medio)">Saco 15 kg — Tamaño medio</option>
-            <option value="Saco 10 kg (Cachorro)">Saco 10 kg — Cachorro</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Cantidad *</label>
-          <select id="f-cantidad">
-            <option value="1">1 saco</option>
-            <option value="2">2 sacos</option>
-            <option value="3">3 sacos</option>
-            <option value="4">4 o más — lo hablamos</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>¿Algo más que deberíamos saber?</label>
-        <textarea id="f-notas" placeholder="Raza de tu perro, instrucciones de entrega, horario preferido..."></textarea>
-      </div>
-
-      <button class="form-submit" id="formBtn">
-        <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.72.45 3.4 1.3 4.88L2 22l5.35-1.4c1.42.78 3.02 1.19 4.66 1.19h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.05 2zm5.79 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.55-1.17-2.97s.74-2.1 1-2.39c.26-.28.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.1.19-.15.31-.29.47-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.64-.14.26.09 1.66.78 1.95.93.28.14.47.21.54.33.07.12.07.69-.17 1.37z"/></svg>
-        Enviar pedido por WhatsApp
-      </button>
-      <p class="form-note">
-        Al hacer click se abrirá WhatsApp con tu pedido listo para enviar.<br>
-        Confirmamos disponibilidad y coordinamos la entrega contigo.
-      </p>
-    </div>
-
-  </div>
-</section>
 
 <!-- FAQ -->
 <section class="faq-section" id="faq">
@@ -454,39 +378,6 @@ document.querySelectorAll('.faq-question').forEach(btn => {
   });
 });
 
-// FORMULARIO DE PEDIDO → WhatsApp
-document.getElementById('formBtn').addEventListener('click', () => {
-  const nombre   = document.getElementById('f-nombre').value.trim();
-  const telefono = document.getElementById('f-telefono').value.trim();
-  const direccion = document.getElementById('f-direccion').value.trim();
-  const producto = document.getElementById('f-producto').value;
-  const cantidad = document.getElementById('f-cantidad').value;
-  const notas    = document.getElementById('f-notas').value.trim();
-  const error    = document.getElementById('formError');
-  const success  = document.getElementById('formSuccess');
-
-  // Validación
-  if (!nombre || !direccion || !producto) {
-    error.classList.add('show');
-    success.classList.remove('show');
-    return;
-  }
-  error.classList.remove('show');
-
-  // Armar mensaje
-  let msg = `Hola! Quiero hacer un pedido 🐾\n\n`;
-  msg += `*Nombre:* ${nombre}\n`;
-  if (telefono) msg += `*Teléfono:* ${telefono}\n`;
-  msg += `*Dirección:* ${direccion}\n`;
-  msg += `*Producto:* ${producto}\n`;
-  msg += `*Cantidad:* ${cantidad} saco(s)\n`;
-  if (notas) msg += `*Notas:* ${notas}\n`;
-  msg += `\n¿Tienen stock disponible y cuándo pueden entregar?`;
-
-  const url = `https://wa.me/56984327516?text=${encodeURIComponent(msg)}`;
-  success.classList.add('show');
-  setTimeout(() => window.open(url, '_blank'), 400);
-});
 
 
 // ═══ SHOP MODAL ═══
